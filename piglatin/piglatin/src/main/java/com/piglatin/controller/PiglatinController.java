@@ -17,7 +17,7 @@ public class PiglatinController {
 	private PigLatinService pigLatinService;
 
 	@RequestMapping(value = "/piglatin", method = RequestMethod.GET)
-	public ResponseEntity<String> translateInLatin(@RequestParam String sentence) {
+	public ResponseEntity<String> translateInLatin(@RequestParam(required = true) String sentence) {
 		return new ResponseEntity<String>(pigLatinService.translateInLatin(sentence), HttpStatus.OK);
 	}
 

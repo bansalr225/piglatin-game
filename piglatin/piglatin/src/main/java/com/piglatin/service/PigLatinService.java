@@ -19,20 +19,19 @@ public class PigLatinService {
 				String[] hyphenSpilletedWords = word.split("-");
 				for (int j = 0; j < hyphenSpilletedWords.length; j++) {
 					if (j == hyphenSpilletedWords.length - 1)
-						modifiedString += modiFyTheWord(word);
+						modifiedString += modiFyTheWord(hyphenSpilletedWords[j]);
 					else
-						modifiedString += modiFyTheWord(word) + "-";
+						modifiedString += modiFyTheWord(hyphenSpilletedWords[j]) + "-";
 				}
 			} else
 				modifiedString = modiFyTheWord(word);
 			words[i] = modifiedString;
-			return words.toString();
-			// return getFinalStringFromWords(words);
 		}
-		return sentence;
+		//return words.toString();
+		return getFinalStringFromWords(words);
 	}
 
-	private String getFinalStringFromWords(String[] words) {
+	public String getFinalStringFromWords(String[] words) {
 		String finalString = "";
 		for (int i = 0; i < words.length; i++) {
 			if (i == words.length - 1)
@@ -40,7 +39,7 @@ public class PigLatinService {
 			else
 				finalString += words[i] + " ";
 		}
-		return null;
+		return finalString;
 	}
 
 	/**
@@ -49,16 +48,16 @@ public class PigLatinService {
 	 * @param word
 	 * @return it's return final modified pig latin.
 	 */
-	private String modiFyTheWord(String word) {
+	public String modiFyTheWord(String word) {
 		switch (checkConditions(word)) {
 		case 1: {
-			if (containsPuctuation(word))
+			if (isContainsPuctuation(word))
 				return puctuationContainedModifiedWord(word, "ay", 1);
 			else
 				return addSpecialWord(word, "ay", 1);
 		}
 		case 2: {
-			if (containsPuctuation(word))
+			if (isContainsPuctuation(word))
 				return puctuationContainedModifiedWord(word, "way", 2);
 			else
 				return addSpecialWord(word, "way", 2);
@@ -81,9 +80,18 @@ public class PigLatinService {
 	 * @param rule
 	 * @return returning with adding special word based on condition
 	 */
-	private String addSpecialWord(String word, String specialWord, int rule) {
-		// TODO Auto-generated method stub
-		return null;
+	public String addSpecialWord(String word, String specialWord, int rule) {
+		if(word.length()==1)
+			return word+specialWord;
+		if (rule == 1) {
+			if (Character.isUpperCase(word.charAt(0)))
+				word = word.substring(1, 2).toUpperCase() + word.substring(2) + word.substring(0, 1).toLowerCase()
+						+ specialWord;
+			else
+				word = word.substring(1, 2) + word.substring(2) + word.substring(0, 1) + specialWord;
+		} else
+			word += specialWord;
+		return word;
 	}
 
 	/**
@@ -95,8 +103,29 @@ public class PigLatinService {
 	 * @param rule
 	 * @return returning with adding special word based on condition
 	 */
-	private String puctuationContainedModifiedWord(String word, String specialWord, int rule) {
-		return null;
+	public String puctuationContainedModifiedWord(String word, String specialWord, int rule) {
+		String temp = "";
+		int punctuationPosition = 0;
+		char punctuationChar = ' ';
+		char firstChar = word.charAt(0);
+		for (int k = 0; k < word.length(); k++) {
+			if (word.charAt(k) >= 33 && word.charAt(k) <= 63) {
+				punctuationPosition = k;
+				punctuationChar = word.charAt(k);
+			} else
+				temp = temp + word.charAt(k);
+		}
+		if (rule == 1) {
+			if (Character.isUpperCase(firstChar))
+				temp = temp.substring(1, 2).toUpperCase() + temp.substring(2) + temp.substring(0, 1).toLowerCase()
+						+ specialWord;
+			else
+				temp = temp.substring(1, 2) + temp.substring(2) + temp.substring(0, 1) + specialWord;
+		} else
+			temp += specialWord;
+		StringBuilder finalString = new StringBuilder(temp);
+		finalString.insert((temp.length() - (word.length() - 1 - punctuationPosition)), punctuationChar);
+		return finalString.toString();
 	}
 
 	/**
@@ -105,8 +134,11 @@ public class PigLatinService {
 	 * @param word
 	 * @return
 	 */
-	private boolean containsPuctuation(String word) {
-		// TODO Auto-generated method stub
+	public boolean isContainsPuctuation(String word) {
+		for (int k = 0; k < word.length(); k++) {
+			if (word.charAt(k) >= 33 && word.charAt(k) <= 63)
+				return true;
+		}
 		return false;
 	}
 
@@ -116,7 +148,7 @@ public class PigLatinService {
 	 * @param word
 	 * @return
 	 */
-	private int checkConditions(String word) {
+	public int checkConditions(String word) {
 		char c = word.charAt(0);
 		if (word.length() >= 3 && "way".equalsIgnoreCase(word.substring(word.length() - 3)))
 			return 3;
@@ -133,9 +165,8 @@ public class PigLatinService {
 	 * @param word
 	 * @return
 	 */
-	private boolean isWordContainsHyphen(String word) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isWordContainsHyphen(String word) {
+		return word.contains("-");
 	}
 
 	/**
@@ -144,7 +175,7 @@ public class PigLatinService {
 	 * @param sentence
 	 * @throws NullPointerException
 	 */
-	private void validate(String sentence) throws NullPointerException {
+	public void validate(String sentence) throws NullPointerException {
 		if (StringUtils.isEmpty(sentence) || "".equals(sentence.trim()))
 			throw new NullPointerException("Invalid string !!");
 	}
