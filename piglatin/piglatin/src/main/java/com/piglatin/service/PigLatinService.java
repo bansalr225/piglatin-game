@@ -5,7 +5,12 @@ import org.springframework.util.StringUtils;
 
 @Service
 public class PigLatinService {
-
+	/**
+	 * This method takes input as string/sentence and returns output piglatin by calling sub-methods
+	 * 
+	 * @param sentence
+	 * @return
+	 */
 	public String translateInLatin(String sentence) {
 		validate(sentence);
 		// Split the sentence/paragraph from space.
@@ -30,7 +35,12 @@ public class PigLatinService {
 		//return words.toString();
 		return getFinalStringFromWords(words);
 	}
-
+/**
+ * This method is responsible to convert array string to string after adding space between the words
+ * 
+ * @param words
+ * @return
+ */
 	public String getFinalStringFromWords(String[] words) {
 		String finalString = "";
 		for (int i = 0; i < words.length; i++) {

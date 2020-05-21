@@ -15,9 +15,6 @@ class PigLatinServiceTest {
 		assertEquals(expected, pigLatinServiceg.translateInLatin(input));
 	}
 
-	@Test
-	void testGetFinalStringFromWords() {
-	}
 
 	@Test
 	void testModiFyTheWord() {
@@ -55,12 +52,6 @@ class PigLatinServiceTest {
 
 	}
 
-	@Test
-	void testAddSpecialWord3() {
-		String input = "stairway";
-		String expected = "stairway";
-		assertEquals(expected, pigLatinServiceg.addSpecialWord(input, "way", 2));
-	}
 
 	@Test
 	void testPuctuationContainedModifiedWord() {
@@ -109,10 +100,6 @@ class PigLatinServiceTest {
 		String input = "this-thing";
 		boolean expected = true;
 		assertEquals(expected, pigLatinServiceg.isContainsPuctuation(input));
-	}
-
-	@Test()
-	void testValidate() {
 	}
 
 }
